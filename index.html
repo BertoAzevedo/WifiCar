@@ -207,7 +207,12 @@
 				document.getElementById("y_coordinate").innerText = 0
 				document.getElementById("speed").innerText = 0
 				document.getElementById("angle").innerText = 0
-				document.getElementById("final_direction").innerText = "Stop"
+				direction = "Stop"
+				document.getElementById("final_direction").innerText = direction
+				if (previous_sent_direction !== direction) {
+					send(0, 0, 0, 0, direction)
+					previous_sent_direction = direction
+				}
 			})
 
 			var width, height, radius, x_orig, y_orig
@@ -279,7 +284,12 @@
 				document.getElementById("y_coordinate").innerText = 0
 				document.getElementById("speed").innerText = 0
 				document.getElementById("angle").innerText = 0
-				document.getElementById("final_direction").innerText = "Stop"
+				direction = "Stop"
+				document.getElementById("final_direction").innerText = direction
+				if (previous_sent_direction !== direction) {
+					send(0, 0, 0, 0, direction)
+					previous_sent_direction = direction
+				}
 			}
 
 			function CalculateDirection(x_relative, y_relative) {
