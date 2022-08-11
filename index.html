@@ -13,7 +13,7 @@
 			font-size: xx-large;
 			overscroll-behavior-y: contain;
 			-webkit-user-select: none; /* Safari */
-  			-ms-user-select: none; /* IE 10 and IE 11 */
+			-ms-user-select: none; /* IE 10 and IE 11 */
 			user-select: none; /* Standard syntax */
 		"
 	>
@@ -269,12 +269,16 @@
 
 			function startDrawing(event) {
 				paint = true
-				getPosition(event)
-				if (is_it_in_the_circle()) {
-					ctx.clearRect(0, 0, canvas.width, canvas.height)
-					background()
-					joystick(coord.x, coord.y)
-					Draw()
+				try {
+					getPosition(event)
+					if (is_it_in_the_circle()) {
+						ctx.clearRect(0, 0, canvas.width, canvas.height)
+						background()
+						joystick(coord.x, coord.y)
+						Draw()
+					}
+				} catch (err) {
+					console.log(err)
 				}
 			}
 
@@ -296,39 +300,41 @@
 			}
 
 			function CalculateDirection(x_relative, y_relative) {
-				if (y_relative <= 0 && x_relative >= -100 && x_relative <= 100)
+				if (y_relative <= 0 && x_relative >= -80 && x_relative <= 80)
 					return "Foward"
 
 				if (
-					y_relative >= -30 &&
-					y_relative <= 30 &&
-					x_relative <= -190 &&
-					x_relative >= -200
+					y_relative >= -80 &&
+					y_relative <= 80 &&
+					x_relative <= -140 &&
+					x_relative >= -150
 				)
 					return "Left"
 
 				if (
-					y_relative >= -30 &&
-					y_relative <= 30 &&
-					x_relative >= 190 &&
-					x_relative <= 200
+					y_relative >= -80 &&
+					y_relative <= 80 &&
+					x_relative >= 140 &&
+					x_relative <= 150
 				)
 					return "Right"
 
-				if (y_relative >= 0 && x_relative <= 100 && x_relative >= -100)
+				if (y_relative >= 0 && x_relative <= 80 && x_relative >= -80)
 					return "Backwards"
 
-				if (y_relative <= 0 && x_relative >= -200 && x_relative <= -100)
+				if (y_relative <= 0 && x_relative <= -80)
 					return "Foward_Left"
 
-				if (y_relative <= 0 && x_relative <= 200 && x_relative >= 100)
+				if (y_relative <= 0 && x_relative >= 80)
 					return "Foward_Right"
 
-				if (y_relative >= 0 && x_relative >= -200 && x_relative <= -100)
+				if (y_relative >= 0 && x_relative >= -150 && x_relative <= -80)
 					return "Backwards_Left"
 
-				if (y_relative >= 0 && x_relative >= 100 && x_relative <= 200)
+				if (y_relative >= 0 && x_relative >= 80 && x_relative <= 150)
 					return "Backwards_Right"
+
+				return "Stop"
 			}
 
 			function Draw(event) {
@@ -374,7 +380,7 @@
 						CalculateDirection(x_relative, y_relative)
 
 					let new_direction = CalculateDirection(x_relative, y_relative)
-					if (previous_sent_direction !== new_direction) {
+					if (previous_sent_direction !== new_direction && speed == 100) {
 						send(x_relative, y_relative, speed, angle_in_degrees, new_direction)
 						previous_sent_direction = new_direction
 					}

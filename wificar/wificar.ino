@@ -4,7 +4,7 @@
 #include <ArduinoJson.h>
 
 // Replace with your network credentials
-const char *ssid = "<networkid>";
+const char *ssid = "<network>";
 const char *password = "<password>";
 
 bool ledState = 0;
@@ -42,110 +42,117 @@ void notifyClients()
 
 void handleWebSocketMessage(void *arg, uint8_t *data, size_t len)
 {
-  AwsFrameInfo *info = (AwsFrameInfo *)arg;
-  if (info->final && info->index == 0 && info->len == len && info->opcode == WS_TEXT)
+  try
   {
-    data[len] = 0;
+    AwsFrameInfo *info = (AwsFrameInfo *)arg;
+    if (info->final && info->index == 0 && info->len == len && info->opcode == WS_TEXT)
+    {
+      data[len] = 0;
 
-    StaticJsonDocument<200> doc;
-    DeserializationError error = deserializeJson(doc, (char *)data);
-    if (error)
-    {
-      Serial.print(F("deserializeJson() failed: "));
-      Serial.println(error.f_str());
-      return;
-    }
-    const char *final_direction = doc["final_direction"];
-    Serial.print(final_direction);
-    Serial.print("\n");
+      StaticJsonDocument<200> doc;
+      DeserializationError error = deserializeJson(doc, (char *)data);
+      if (error)
+      {
+        Serial.print(F("deserializeJson() failed: "));
+        Serial.println(error.f_str());
+        return;
+      }
+      const char *final_direction = doc["final_direction"];
+      Serial.print(final_direction);
+      Serial.print("\n");
 
-    if (strcmp(final_direction, "toggle") == 0)
-    {
-      ledState = !ledState;
-      LogState();
-      notifyClients();
+      if (strcmp(final_direction, "toggle") == 0)
+      {
+        ledState = !ledState;
+        LogState();
+        notifyClients();
+      }
+      else if (strcmp(final_direction, "Foward") == 0)
+      {
+        BACK_MOTOR_FOWARD_STATE = 1;
+        BACK_MOTOR_BACKWARDS_STATE = 0;
+        FRONT_MOTOR_LEFT_STATE = 0;
+        FRONT_MOTOR_RIGHT_STATE = 0;
+        LogState();
+        notifyClients();
+      }
+      else if (strcmp(final_direction, "Foward_Left") == 0)
+      {
+        BACK_MOTOR_FOWARD_STATE = 1;
+        BACK_MOTOR_BACKWARDS_STATE = 0;
+        FRONT_MOTOR_LEFT_STATE = 1;
+        FRONT_MOTOR_RIGHT_STATE = 0;
+        LogState();
+        notifyClients();
+      }
+      else if (strcmp(final_direction, "Foward_Right") == 0)
+      {
+        BACK_MOTOR_FOWARD_STATE = 1;
+        BACK_MOTOR_BACKWARDS_STATE = 0;
+        FRONT_MOTOR_LEFT_STATE = 0;
+        FRONT_MOTOR_RIGHT_STATE = 1;
+        LogState();
+        notifyClients();
+      }
+      else if (strcmp(final_direction, "Backwards") == 0)
+      {
+        BACK_MOTOR_FOWARD_STATE = 0;
+        BACK_MOTOR_BACKWARDS_STATE = 1;
+        FRONT_MOTOR_LEFT_STATE = 0;
+        FRONT_MOTOR_RIGHT_STATE = 0;
+        LogState();
+        notifyClients();
+      }
+      else if (strcmp(final_direction, "Backwards_Left") == 0)
+      {
+        BACK_MOTOR_FOWARD_STATE = 0;
+        BACK_MOTOR_BACKWARDS_STATE = 1;
+        FRONT_MOTOR_LEFT_STATE = 1;
+        FRONT_MOTOR_RIGHT_STATE = 0;
+        LogState();
+        notifyClients();
+      }
+      else if (strcmp(final_direction, "Backwards_Right") == 0)
+      {
+        BACK_MOTOR_FOWARD_STATE = 0;
+        BACK_MOTOR_BACKWARDS_STATE = 1;
+        FRONT_MOTOR_LEFT_STATE = 0;
+        FRONT_MOTOR_RIGHT_STATE = 1;
+        LogState();
+        notifyClients();
+      }
+      else if (strcmp(final_direction, "Right") == 0)
+      {
+        BACK_MOTOR_FOWARD_STATE = 0;
+        BACK_MOTOR_BACKWARDS_STATE = 0;
+        FRONT_MOTOR_LEFT_STATE = 0;
+        FRONT_MOTOR_RIGHT_STATE = 1;
+        LogState();
+        notifyClients();
+      }
+      else if (strcmp(final_direction, "Left") == 0)
+      {
+        BACK_MOTOR_FOWARD_STATE = 0;
+        BACK_MOTOR_BACKWARDS_STATE = 0;
+        FRONT_MOTOR_LEFT_STATE = 1;
+        FRONT_MOTOR_RIGHT_STATE = 0;
+        LogState();
+        notifyClients();
+      }
+      else if (strcmp(final_direction, "Stop") == 0)
+      {
+        BACK_MOTOR_FOWARD_STATE = 0;
+        BACK_MOTOR_BACKWARDS_STATE = 0;
+        FRONT_MOTOR_LEFT_STATE = 0;
+        FRONT_MOTOR_RIGHT_STATE = 0;
+        LogState();
+        notifyClients();
+      }
     }
-    else if (strcmp(final_direction, "Foward") == 0)
-    {
-      BACK_MOTOR_FOWARD_STATE = 1;
-      BACK_MOTOR_BACKWARDS_STATE = 0;
-      FRONT_MOTOR_LEFT_STATE = 0;
-      FRONT_MOTOR_RIGHT_STATE = 0;
-      LogState();
-      notifyClients();
-    }
-    else if (strcmp(final_direction, "Foward_Left") == 0)
-    {
-      BACK_MOTOR_FOWARD_STATE = 1;
-      BACK_MOTOR_BACKWARDS_STATE = 0;
-      FRONT_MOTOR_LEFT_STATE = 1;
-      FRONT_MOTOR_RIGHT_STATE = 0;
-      LogState();
-      notifyClients();
-    }
-    else if (strcmp(final_direction, "Foward_Right") == 0)
-    {
-      BACK_MOTOR_FOWARD_STATE = 1;
-      BACK_MOTOR_BACKWARDS_STATE = 0;
-      FRONT_MOTOR_LEFT_STATE = 0;
-      FRONT_MOTOR_RIGHT_STATE = 1;
-      LogState();
-      notifyClients();
-    }
-    else if (strcmp(final_direction, "Backwards") == 0)
-    {
-      BACK_MOTOR_FOWARD_STATE = 0;
-      BACK_MOTOR_BACKWARDS_STATE = 1;
-      FRONT_MOTOR_LEFT_STATE = 0;
-      FRONT_MOTOR_RIGHT_STATE = 0;
-      LogState();
-      notifyClients();
-    }
-    else if (strcmp(final_direction, "Backwards_Left") == 0)
-    {
-      BACK_MOTOR_FOWARD_STATE = 0;
-      BACK_MOTOR_BACKWARDS_STATE = 1;
-      FRONT_MOTOR_LEFT_STATE = 1;
-      FRONT_MOTOR_RIGHT_STATE = 0;
-      LogState();
-      notifyClients();
-    }
-    else if (strcmp(final_direction, "Backwards_Right") == 0)
-    {
-      BACK_MOTOR_FOWARD_STATE = 0;
-      BACK_MOTOR_BACKWARDS_STATE = 1;
-      FRONT_MOTOR_LEFT_STATE = 0;
-      FRONT_MOTOR_RIGHT_STATE = 1;
-      LogState();
-      notifyClients();
-    }
-    else if (strcmp(final_direction, "Right") == 0)
-    {
-      BACK_MOTOR_FOWARD_STATE = 0;
-      BACK_MOTOR_BACKWARDS_STATE = 0;
-      FRONT_MOTOR_LEFT_STATE = 0;
-      FRONT_MOTOR_RIGHT_STATE = 1;
-      LogState();
-      notifyClients();
-    }
-    else if (strcmp(final_direction, "Left") == 0)
-    {
-      BACK_MOTOR_FOWARD_STATE = 0;
-      BACK_MOTOR_BACKWARDS_STATE = 0;
-      FRONT_MOTOR_LEFT_STATE = 1;
-      FRONT_MOTOR_RIGHT_STATE = 0;
-      LogState();
-      notifyClients();
-    }
-    else if (strcmp(final_direction, "Stop") == 0)
-    {
-      BACK_MOTOR_FOWARD_STATE = 0;
-      BACK_MOTOR_BACKWARDS_STATE = 0;
-      FRONT_MOTOR_LEFT_STATE = 0;
-      FRONT_MOTOR_RIGHT_STATE = 0;
-      LogState();
-      notifyClients();
-    }
+  }
+  catch (...)
+  {
+    // Error when parsing
   }
 }
 
