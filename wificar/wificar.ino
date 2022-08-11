@@ -4,7 +4,7 @@
 #include <ArduinoJson.h>
 
 // Replace with your network credentials
-const char *ssid = "<network>";
+const char *ssid = "<networkid>";
 const char *password = "<password>";
 
 bool ledState = 0;
@@ -12,8 +12,8 @@ const int ledPin = 2;
 
 const byte L298N_BACK_MOTOR_FOWARD = D2;
 const byte L298N_BACK_MOTOR_BACKWARDS = D4;
-const byte L298N_FRONT_MOTOR_LEFT = D3;
-const byte L298N_FRONT_MOTOR_RIGHT = D5;
+const byte L298N_FRONT_MOTOR_LEFT = D5;
+const byte L298N_FRONT_MOTOR_RIGHT = D3;
 
 bool BACK_MOTOR_FOWARD_STATE = 0;
 bool BACK_MOTOR_BACKWARDS_STATE = 0;
