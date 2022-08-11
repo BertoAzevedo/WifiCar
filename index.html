@@ -25,7 +25,6 @@
 		<p style="text-align: center">
 			Direction: <span id="final_direction"> </span>
 		</p>
-
 		<canvas id="canvas" name="game"></canvas>
 		<script>
 			var connection = new WebSocket("ws://192.168.3.89/ws", ["arduino"])
@@ -222,8 +221,8 @@
 			var width, height, radius, x_orig, y_orig
 			function resize() {
 				width = window.innerWidth
-				radius = 200
-				height = radius * 6.5
+				radius = 150
+				height = radius * 5
 				ctx.canvas.width = width
 				ctx.canvas.height = height
 				background()
