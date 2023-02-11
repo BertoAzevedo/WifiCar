@@ -3,10 +3,10 @@
 I decided to recycle my old remote controlled car. The battery is dead and i lost the remote controller which is perfect for this project :D
 
 #### Initial idea: 
-*Build a wifi socket controlled old rc car through a hosted webpage so we can use in any device using a browser*
+*Build a wifi socket controlled old rc car with ESP8266 through a hosted webpage so we can use in any device using a browser*
   
 ##### Components used:
-- Wemos D1 R1 arduino
+- Wemos D1 R1 arduino with ESP8266 module
 - L298N module for controlling the motors
 - 4xAA rechargeable battery pack
 
@@ -16,6 +16,8 @@ I decided to recycle my old remote controlled car. The battery is dead and i los
   - var connection = new WebSocket("ws://<IP>/ws", ["arduino"])
 - node wificar.js
 *It will be hosted at localhost:1707
+
+Arduino Code: wificar/wificar.ino
 
 #### Build:
 ![Alt Text](media/wificar.png)
