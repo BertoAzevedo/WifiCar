@@ -21,4 +21,4 @@ I decided to recycle my old remote controlled car. The battery is dead and i los
 ![Alt Text](media/wificar.png)
 
 #### Short clip
-![Alt Text](media/VID_20230210_203731.gif)
+![Alt Text](media/wificar.gif)
