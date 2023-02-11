@@ -27,7 +27,7 @@
 		</p>
 		<canvas id="canvas" name="game"></canvas>
 		<script>
-			var connection = new WebSocket("ws://192.168.3.89/ws", ["arduino"])
+			var connection = new WebSocket("ws://<IP>/ws", ["arduino"])
 			connection.onopen = function () {
 				connection.send("Connect " + new Date())
 			}
@@ -322,11 +322,9 @@
 				if (y_relative >= 0 && x_relative <= 80 && x_relative >= -80)
 					return "Backwards"
 
-				if (y_relative <= 0 && x_relative <= -80)
-					return "Foward_Left"
+				if (y_relative <= 0 && x_relative <= -80) return "Foward_Left"
 
-				if (y_relative <= 0 && x_relative >= 80)
-					return "Foward_Right"
+				if (y_relative <= 0 && x_relative >= 80) return "Foward_Right"
 
 				if (y_relative >= 0 && x_relative >= -150 && x_relative <= -80)
 					return "Backwards_Left"
